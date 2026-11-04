@@ -1,0 +1,26 @@
+# Docs internos y de planeacion
+CLAUDE.md
+AGENTS.md
+docs/
+planning/
+notes/
+*.internal.md
+
+# Secretos
+.env
+.env.*
+!.env.example
+
+# Dependencias y builds
+node_modules/
+.next/
+dist/
+build/
+__pycache__/
+*.pyc
+.venv/
+
+# Sistema
+.DS_Store
+Thumbs.db
+.claude/
