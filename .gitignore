@@ -1,26 +1,38 @@
-# Docs internos y de planeacion
+# Internal and planning docs
 CLAUDE.md
 AGENTS.md
+plan.md
+claude_review.md
+codex_review.md
 docs/
 planning/
 notes/
 *.internal.md
 
-# Secretos
+# Secrets
 .env
 .env.*
 !.env.example
 
-# Dependencias y builds
+# Dependencies and builds
 node_modules/
 .next/
+.output/
+.wxt/
 dist/
 build/
 __pycache__/
 *.pyc
 .venv/
 
-# Sistema
+# System
 .DS_Store
 Thumbs.db
 .claude/
+
+# Local data (API output, event CSVs, model artifacts)
+data/
+
+# Local development diary (not shared)
+docs/DEV_LOG.md
+docs/dev_log_archive/
