@@ -1,0 +1,36 @@
+@import "tailwindcss";
+
+/* Microburbs palette: logo blue (#1a76ee) deepening into navy and violet. */
+@theme {
+  --color-brand-50: #eef4ff;
+  --color-brand-100: #dbe7fe;
+  --color-brand-200: #bcd2fd;
+  --color-brand-500: #1a76ee;
+  --color-brand-600: #1b5fd6;
+  --color-brand-700: #2a3fb0;
+  --color-brand-800: #2b2a83;
+  --color-brand-900: #1b1a4d;
+  --color-violet-brand: #6b3fd4;
+}
+
+/* Soft blue light around the agent card. */
+.agent-glow {
+  box-shadow:
+    0 0 0 1.5px rgb(26 118 238 / 0.55),
+    0 0 18px 2px rgb(26 118 238 / 0.28),
+    0 0 36px 6px rgb(107 63 212 / 0.12);
+  animation: agent-glow 3.2s ease-in-out infinite;
+}
+@keyframes agent-glow {
+  50% {
+    box-shadow:
+      0 0 0 1.5px rgb(26 118 238 / 0.75),
+      0 0 24px 4px rgb(26 118 238 / 0.38),
+      0 0 44px 8px rgb(107 63 212 / 0.18);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .agent-glow {
+    animation: none;
+  }
+}

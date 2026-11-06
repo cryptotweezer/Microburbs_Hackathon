@@ -1,0 +1,48 @@
+paths:
+  raw: ../data/raw
+  cutoff: ../data/cutoff
+  artifacts: ../data/artifacts
+  submissions: ../data/submissions
+files:
+  flats: rents-input-flats-city-of-sydney.csv
+  leases: rents-past-leases-city-of-sydney.csv
+  blocks: blocks-homes-and-people-2021-2026.csv
+cutoff: '2026-07-31'
+horizon: '2026-08-31'
+seed: 42
+team: team-name
+expected_rows: 65777
+block_stats_as_of: '2026-07-31'
+mask_post_cutoff_attributes: false
+columns:
+  flats:
+    gnaf_id: gnaf_id
+    address: address
+    building_address: building_address
+    suburb: suburb
+    mb: mb
+    latitude: latitude
+    longitude: longitude
+    property_type: property_type
+    bedrooms: bedrooms
+    bathrooms: bathrooms
+    car_space: car_space
+    car_spaces: car_spaces
+    floor_level: floor_level
+    flats_in_building: flats_in_building
+    block_new_homes_2021_2026: block_new_homes_2021_2026
+    block_homes_2026: block_homes_2026
+    ever_advertised_for_lease: ever_advertised_for_lease
+    first_ever_listed: first_ever_listed
+    attrs_last_seen: attrs_last_seen
+  leases:
+    gnaf_id: gnaf_id
+    date: date
+    rent: rent
+    bedrooms: bedrooms
+    bathrooms: bathrooms
+    car_spaces: car_spaces
+  blocks:
+    mb: mb
+    block_new_homes_2021_2026: block_new_homes_2021_2026
+    block_homes_2026: block_homes_2026

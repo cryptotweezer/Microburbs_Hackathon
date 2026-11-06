@@ -1,0 +1,25 @@
+{
+  "name": "microburbs-hackathon",
+  "private": true,
+  "packageManager": "pnpm@10.33.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "typecheck": "pnpm -r typecheck",
+    "test": "pnpm -r test",
+    "dev:web": "pnpm --filter web dev",
+    "dev:extension": "pnpm --filter extension dev",
+    "smoke": "tsx --env-file=.env scripts/smoke-api.mts"
+  },
+  "devDependencies": {
+    "tsx": "^4.23.15",
+    "typescript": "6.0.3",
+    "vitest": "5.1.0",
+    "zod": "4.6.7"
+  },
+  "dependencies": {
+    "@mb/contracts": "workspace:*",
+    "@upstash/redis": "1.41.0"
+  }
+}
