@@ -10,7 +10,8 @@
     "test": "pnpm -r test",
     "dev:web": "pnpm --filter web dev",
     "dev:extension": "pnpm --filter extension dev",
-    "smoke": "tsx --env-file=.env scripts/smoke-api.mts"
+    "smoke": "tsx --env-file=.env scripts/smoke-api.mts",
+    "release:extension": "pnpm --filter extension zip && node scripts/release-zip.mjs"
   },
   "devDependencies": {
     "tsx": "^4.23.15",
