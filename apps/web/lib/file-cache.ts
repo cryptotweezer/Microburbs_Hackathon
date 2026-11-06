@@ -18,7 +18,10 @@ export function fileCache(path: string): Cache {
       flush();
     },
     async incr(key) {
-      const n = ((store[key] as number) ?? 0) + 1;
+      return this.incrBy(key, 1, 0);
+    },
+    async incrBy(key, by) {
+      const n = ((store[key] as number) ?? 0) + by;
       store[key] = n;
       flush();
       return n;
