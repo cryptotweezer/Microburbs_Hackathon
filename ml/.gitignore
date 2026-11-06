@@ -1,0 +1,6 @@
+.uv-cache/
+.pytest_tmp/
+.pytest_cache/
+__pycache__/
+.venv/
+.verification/

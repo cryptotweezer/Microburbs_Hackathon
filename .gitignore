@@ -36,3 +36,9 @@ data/
 # Local development diary (not shared)
 docs/DEV_LOG.md
 docs/dev_log_archive/
+.next-*/
+*.tsbuildinfo
+next-env.d.ts
+
+# Internal ML working notes
+ml/SESSION_LOG.md
