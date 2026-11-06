@@ -1,6 +1,6 @@
 // Main panel endpoint: GET ?address=&mode=&auto=1[&gnaf=][&price=].
 // Resolves the exact unit, loads core facts, verdict, alternatives and insights. Mode is decided by the listing when auto=1.
-import { getDeps, guard, json, preflight, readMode } from "@/lib/server";
+import { getDeps, guard, json, preflight, readMode, upstreamError } from "@/lib/server";
 import { resolveAddress } from "@/lib/resolve";
 import { applyUserPrice, getPropertyFacts, parseUserPrice } from "@/lib/facts";
 import { MicroburbsError } from "@/lib/microburbs";
@@ -65,7 +65,6 @@ export async function GET(req: Request) {
     if (e instanceof MicroburbsError && e.status === 403) {
       return json(req, { match: { input: address, status: "unsupported", note: "Not covered by the data key." }, facts: null });
     }
-    console.error(e);
-    return json(req, { error: "upstream_error", message: "Data provider error. Please retry." }, 502);
+    return upstreamError(req, e);
   }
 }

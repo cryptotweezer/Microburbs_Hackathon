@@ -6,7 +6,8 @@ import { applyUserPrice, getPropertyFacts, parseUserPrice } from "@/lib/facts";
 import { marketRent } from "@/lib/alternatives";
 import { getSuburbListings } from "@/lib/listings";
 import { resolveAddress } from "@/lib/resolve";
-import { getDeps, guard, json, preflight } from "@/lib/server";
+import { MicroburbsError } from "@/lib/microburbs";
+import { getDeps, guard, json, preflight, upstreamError } from "@/lib/server";
 import { targetFromFacts } from "@/lib/target";
 import { priceVerdict } from "@/lib/verdict";
 import { fairRentFor, getRentEstimate } from "@/lib/rent";
@@ -26,7 +27,7 @@ const Body = z.object({
 });
 
 export async function POST(req: Request) {
-  const blocked = await guard(req);
+  const blocked = await guard(req, "chat");
   if (blocked) return blocked;
   if (!process.env.ANTHROPIC_API_KEY) return json(req, { error: "unavailable", message: "The assistant is not configured." }, 503);
   const parsed = Body.safeParse(await req.json().catch(() => null));
@@ -52,6 +53,7 @@ export async function POST(req: Request) {
     );
     return json(req, out);
   } catch (e) {
+    if (e instanceof MicroburbsError && (e.status === 429 || e.status === 503)) return upstreamError(req, e);
     console.error(e);
     return json(req, { error: "agent_error", message: "The assistant could not answer right now. Please retry." }, 502);
   }

@@ -1,6 +1,8 @@
 // Calls to our backend. The extension holds no secrets: every Microburbs call happens server side.
 
 export const BACKEND_URL: string = import.meta.env.WXT_BACKEND_URL || "http://localhost:3000";
+/** Custom header: forces a CORS preflight so other websites cannot fire simple requests at the backend. */
+const CLIENT = { "x-listing-lens": "1" };
 
 export type Mode = "sale" | "rent";
 
@@ -155,7 +157,7 @@ export async function fetchProperty(address: string, mode: Mode, gnaf?: string, 
   if (auto) q.set("auto", "1");
   if (price) q.set("price", String(price));
   if (gnaf) q.set("gnaf", gnaf);
-  const res = await fetch(`${BACKEND_URL}/api/property?${q}`);
+  const res = await fetch(`${BACKEND_URL}/api/property?${q}`, { headers: CLIENT });
   const body = (await res.json().catch(() => ({}))) as PropertyResponse;
   if (!res.ok) throw new Error(body.message ?? `Request failed (${res.status})`);
   return body;
@@ -186,8 +188,12 @@ export const fetchDevelopments = (suburb: string) =>
   );
 
 async function getJson<T>(path: string): Promise<T> {
-  const res = await fetch(`${BACKEND_URL}${path}`);
-  if (!res.ok) throw new Error(`Request failed (${res.status})`);
+  const res = await fetch(`${BACKEND_URL}${path}`, { headers: CLIENT });
+  if (!res.ok) {
+    // Show the backend's own message (rate limit, quota, maintenance) instead of a bare status code.
+    const body = (await res.json().catch(() => ({}))) as { message?: string };
+    throw new Error(body.message ?? `Request failed (${res.status})`);
+  }
   return (await res.json()) as T;
 }
 
@@ -210,7 +216,7 @@ export interface ChatTurn {
 export async function askAgent(address: string, mode: Mode, messages: ChatTurn[], gnaf?: string, price?: number) {
   const res = await fetch(`${BACKEND_URL}/api/chat`, {
     method: "POST",
-    headers: { "content-type": "application/json" },
+    headers: { ...CLIENT, "content-type": "application/json" },
     body: JSON.stringify({ address, mode, messages, gnaf, price }),
   });
   const body = (await res.json().catch(() => ({}))) as {

@@ -6,6 +6,8 @@ export interface Cache {
   set<T>(key: string, value: T, ttlSeconds?: number): Promise<void>;
   /** Atomic counter; the TTL is set when the key is created. */
   incr(key: string, ttlSeconds: number): Promise<number>;
+  /** Atomic add (used for spend in cents); the TTL is set when the key is created. */
+  incrBy(key: string, by: number, ttlSeconds: number): Promise<number>;
 }
 
 export function memoryCache(): Cache {
@@ -20,9 +22,12 @@ export function memoryCache(): Cache {
       store.set(key, { v: value, exp: ttl ? Date.now() + ttl * 1000 : 0 });
     },
     async incr(key, ttl) {
+      return this.incrBy(key, 1, ttl);
+    },
+    async incrBy(key, by, ttl) {
       const hit = store.get(key);
       const live = hit && (!hit.exp || hit.exp >= Date.now());
-      const n = (live ? (hit!.v as number) : 0) + 1;
+      const n = (live ? (hit!.v as number) : 0) + by;
       store.set(key, { v: n, exp: live ? hit!.exp : Date.now() + ttl * 1000 });
       return n;
     },
@@ -39,6 +44,11 @@ function redisCache(redis: Redis): Cache {
     async incr(key, ttl) {
       const n = await redis.incr(key);
       if (n === 1) await redis.expire(key, ttl);
+      return n;
+    },
+    async incrBy(key, by, ttl) {
+      const n = await redis.incrby(key, by);
+      if (n === by) await redis.expire(key, ttl);
       return n;
     },
   };

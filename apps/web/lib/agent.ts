@@ -81,6 +81,11 @@ export interface ChatTurn {
 export async function runAgent(deps: { mb: MicroburbsClient; cache: Cache }, ctx: ChatContext, messages: ChatTurn[]) {
   let alternatives: { items: Alternative[]; filters: Filters; seeAllUrl: string } | null = null;
   const Sal = z.enum(CITY_OF_SYDNEY_SALS);
+  // Each outside address costs a geocode plus property calls: cap them per question so a prompt cannot fan out.
+  let lookups = 0;
+  const MAX_LOOKUPS = 2;
+  const lookup = (address: string) =>
+    ++lookups > MAX_LOOKUPS ? Promise.resolve({ noData: `Limit of ${MAX_LOOKUPS} other addresses per question reached. Ask about the rest separately.` }) : lookupAddress(deps, address, ctx.mode);
 
   const result = await generateText({
     model: anthropic(AGENT_MODEL),
@@ -124,12 +129,12 @@ export async function runAgent(deps: { mb: MicroburbsClient; cache: Cache }, ctx
       lookup_address: tool({
         description: "Match any City of Sydney address exactly and return its core facts (listing, price verdict, valuation, best comparable sale).",
         inputSchema: z.object({ address: z.string().min(5).max(160).describe("Full address, e.g. 'Unit 417, 261 Harris Street, Pyrmont'") }),
-        execute: async ({ address }) => lookupAddress(deps, address, ctx.mode),
+        execute: async ({ address }) => lookup(address),
       }),
       compare_listings: tool({
         description: "Compare the property on screen with another City of Sydney address side by side.",
         inputSchema: z.object({ address: z.string().min(5).max(160) }),
-        execute: async ({ address }) => ({ thisProperty: propertySummary(ctx.address, ctx.mode, ctx.facts), other: await lookupAddress(deps, address, ctx.mode) }),
+        execute: async ({ address }) => ({ thisProperty: propertySummary(ctx.address, ctx.mode, ctx.facts), other: await lookup(address) }),
       }),
       compare_suburbs: tool({
         description: "Market indicators for up to 3 City of Sydney suburbs side by side (days on market, supply, strata, crime; or vacancy and yield when renting).",
