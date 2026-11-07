@@ -37,7 +37,7 @@ export function MatchReceipt({ match, onPick }: { match: Match; onPick: (gnaf: s
 }
 
 /** Lets the user type the asking price shown on the portal when Microburbs has none. */
-function AskingPriceInput({ mode, onPrice }: { mode: Mode; onPrice: (n: number) => void }) {
+export function AskingPriceInput({ mode, onPrice }: { mode: Mode; onPrice: (n: number) => void }) {
   const [raw, setRaw] = useState("");
   const [bad, setBad] = useState(false);
   const submit = () => {
