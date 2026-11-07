@@ -3,6 +3,7 @@
 import type React from "react";
 import { useEffect } from "react";
 import { fetchDevelopments, fetchSection, type Mode, type PropertyResponse, type Verdict } from "@/lib/api";
+import { MatchCard } from "./match-card";
 import { AskingPriceInput } from "./sections";
 import { Badge, money, short, Source, useLazy } from "./ui";
 
@@ -200,8 +201,8 @@ function ContextRow({ icon, label, value }: { icon: string; label: string; value
   );
 }
 
-/** Loads risks, transport and development applications as soon as the overview shows. */
-function LocalContext({ gnaf, suburb }: { gnaf: string; suburb: string | null }) {
+/** Loads risks, transport and development applications as soon as the overview shows (shared by the match card). */
+function useLocalData(gnaf: string, suburb: string | null) {
   const risks = useLazy(() => fetchSection(gnaf, "risks"));
   const transport = useLazy(() => fetchSection(gnaf, "transport"));
   const das = useLazy(() => (suburb ? fetchDevelopments(suburb) : Promise.reject(new Error("no suburb"))));
@@ -211,6 +212,12 @@ function LocalContext({ gnaf, suburb }: { gnaf: string; suburb: string | null })
     das.start();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  return { risks, transport, das };
+}
+export type LocalData = ReturnType<typeof useLocalData>;
+
+function LocalContext({ local }: { local: LocalData }) {
+  const { risks, transport, das } = local;
   const wait = (s: string) => (s === "loading" || s === "idle" ? <span className="text-slate-400">...</span> : <span className="text-slate-400">No data</span>);
   const r = risks.data?.risks.value as Record<string, RiskRow[] | null> | null | undefined;
   const n = transport.data?.transport.value?.nearest;
@@ -245,6 +252,7 @@ export function Overview({ data, mode, onShowDetails, onPrice }: { data: Propert
   const f = data.facts!;
   const l = f.listing.value;
   const q = f.agentQuoting.value;
+  const local = useLocalData(data.match.gnafId ?? "", data.match.suburb);
   return (
     <section className="space-y-3 rounded-2xl border border-slate-200 bg-white p-3 shadow-sm">
       <div>
@@ -263,8 +271,9 @@ export function Overview({ data, mode, onShowDetails, onPrice }: { data: Propert
       ) : null}
       {!l?.price && (!l?.listedFor || l.listedFor === mode) ? <AskingPriceInput mode={mode} onPrice={onPrice} /> : null}
       {f.listing.userPrice ? <p className="-mt-2 text-[11px] text-slate-500">Asking price entered by you, not from Microburbs.</p> : null}
+      <MatchCard data={data} mode={mode} local={local} />
       {mode === "sale" ? <SaleTiles data={data} /> : <RentTiles data={data} />}
-      {data.match.gnafId ? <LocalContext gnaf={data.match.gnafId} suburb={data.match.suburb} /> : null}
+      <LocalContext local={local} />
       <div className="flex items-center justify-between gap-2 pt-1">
         <button onClick={onShowDetails} className="rounded-lg bg-brand-900 px-3 py-2 text-xs font-semibold text-white hover:bg-brand-800">
           View full property report →
