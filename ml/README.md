@@ -16,9 +16,9 @@ In an environment where the preinstalled `.venv` is read-only, first set `$env:U
 
 The synthetic CLI deterministically regenerates its inputs on every run. Full-size output has 65,777 rows. M0 validates M0 and M1; M2 validates all three models. `data/artifacts/metrics.json` describes the **latest run**, including both folds, subgroup metrics, pooled metrics, training snapshot dates, ingestion counts, output validation, and runtime. Output CSVs and metrics from later runs replace earlier ones. Synthetic and real modes share the configured artifact/submission paths: use separate configurations to retain both.
 
-## Real data tomorrow
+## Running on the organisers' data
 
-1. Place the three input CSVs in `data/raw/`, or change `paths.raw` and `files` in `config.yaml`.
+1. The organisers' files are not in this repo (judges already have them). Place the three Task 4 CSVs (`rents-input-flats-city-of-sydney.csv`, `rents-past-leases-city-of-sydney.csv`, `blocks-homes-and-people-2021-2026.csv`) in `data/raw/task4/` at the repo root, or change `paths.raw` and `files` in `config.yaml`.
 2. Edit `columns`: keys are canonical names, values are source column names. Keep canonical keys; use `null` for unavailable optional fields. Block IDs and GNAF IDs are read as strings, preserving leading zeros. Extra input columns are ignored.
 3. Set `team`, then run `uv run python -m ml.make_submission --data real --model m2`.
 4. Independently check with `uv run python -m ml.check_submission ../data/submissions/rents_<team>.csv --data real`.
