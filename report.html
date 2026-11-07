@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>How close is a weekly rent estimate, and is it the right flat?</title>
+  <title>Listing Lens: the right facts for the exact flat</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&display=swap" rel="stylesheet" />
@@ -12,13 +12,11 @@
       --ink: #1c3d66;
       --heading: #16325c;
       --blue: #1d4e9c;
-      --blue-2: #2563eb;
       --muted: #4b6584;
       --line: #e3ebf5;
       --page: #f3f6fb;
       --card: #ffffff;
       --soft: #eef4fb;
-      --track: #d9e4f2;
     }
     * { box-sizing: border-box; }
     body {
@@ -31,7 +29,7 @@
       background: linear-gradient(180deg, #1a4fad 0%, #2a67d0 100%);
       color: #fff;
       text-align: center;
-      padding: 4.5rem 1.25rem 3.25rem;
+      padding: 4.2rem 1.25rem 3.1rem;
     }
     .eyebrow {
       display: inline-block;
@@ -45,38 +43,28 @@
       text-transform: uppercase;
     }
     h1 {
-      max-width: 18em;
+      max-width: 16em;
       margin: 0 auto;
-      font-size: clamp(1.8rem, 4vw, 2.7rem);
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
       line-height: 1.15;
       font-weight: 800;
     }
-    main {
-      max-width: 760px;
-      margin: 1.75rem auto 4rem;
-      padding: 0 1.1rem;
-    }
-    .lead {
-      margin: 0 0 1.25rem;
-      color: var(--ink);
-    }
-    h2 {
-      margin: 0 0 0.7rem;
-      color: var(--heading);
-      font-size: 1.15rem;
-      font-weight: 800;
-    }
+    .hero p { max-width: 40rem; margin: 1rem auto 0; font-size: 1.02rem; font-weight: 500; }
+    .hero a { color: #fff; }
+    main { max-width: 820px; margin: 1.75rem auto 4rem; padding: 0 1.1rem; }
+    h2 { margin: 0 0 0.7rem; color: var(--heading); font-size: 1.15rem; font-weight: 800; }
+    h3 { margin: 0 0 0.45rem; color: var(--heading); font-size: 1rem; font-weight: 800; }
     p { margin: 0.55rem 0; }
+    .kicker { margin: 1.6rem 0 0.7rem; color: var(--blue); font-size: 0.78rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; }
     .card, .panel {
       background: var(--card);
       border: 1px solid var(--line);
       border-radius: 18px;
       box-shadow: 0 8px 24px rgba(22, 50, 92, 0.04);
     }
-    .panel { padding: 1.35rem 1.4rem 1.2rem; margin: 0 0 1.25rem; }
-    .chart-title { margin: 0; font-size: 1.05rem; }
-    .chart-sub, .caption { color: var(--muted); font-size: 0.86rem; font-weight: 500; }
-    .bars { margin-top: 1.1rem; display: grid; gap: 0.85rem; }
+    .panel { padding: 1.35rem 1.4rem 1.2rem; margin: 0 0 1.1rem; }
+    .chart-sub, .caption, .note { color: var(--muted); font-size: 0.86rem; font-weight: 500; }
+    .bars { margin-top: 1rem; display: grid; gap: 0.85rem; }
     .bar-row { display: grid; grid-template-columns: 9.5rem 1fr auto; gap: 0.75rem; align-items: center; }
     .bar-label { font-size: 0.86rem; font-weight: 600; }
     .track { height: 1.35rem; background: var(--soft); border-radius: 999px; overflow: hidden; }
@@ -85,65 +73,126 @@
     .fill.mb { background: #7aa2d6; width: 78.2%; }
     .fill.sub { background: #b7cbe6; width: 90.9%; }
     .bar-value { font-weight: 800; color: var(--heading); font-variant-numeric: tabular-nums; }
-    .legend { display: flex; gap: 1rem; margin: 0.2rem 0 0.8rem; color: var(--muted); font-size: 0.8rem; }
-    .swatch { display: inline-block; width: 0.7rem; height: 0.7rem; border-radius: 2px; margin-right: 0.3rem; vertical-align: -1px; }
-    .found { display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem; margin: 0 0 1.25rem; }
-    .stat { padding: 1.15rem 1.2rem 1.2rem; }
+    .found { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.75rem; margin: 0 0 1.1rem; }
+    .stat { padding: 1rem 1.05rem 1.1rem; }
     .num {
-      margin: 0 0 0.35rem;
+      margin: 0 0 0.3rem;
       color: var(--blue);
-      font-size: clamp(1.8rem, 4vw, 2.35rem);
+      font-size: clamp(1.55rem, 3vw, 2rem);
       font-weight: 800;
       line-height: 1.05;
       letter-spacing: -0.03em;
     }
-    .num span { font-size: 0.95rem; font-weight: 700; letter-spacing: 0; }
-    .stat p, .split p { font-size: 0.92rem; }
-    .hold { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; align-items: end; margin: 0.4rem 0 0.8rem; }
-    .hold .num { font-size: clamp(2.4rem, 6vw, 3.4rem); margin: 0; }
-    .hold .unit { color: var(--blue); font-size: 1rem; font-weight: 700; margin-left: 0.35rem; }
-    .share { margin: 0.3rem 0 0.35rem; }
-    .share .track { height: 0.85rem; background: #d7e3f3; }
-    .share .fill { width: 74.8%; background: #1e4fa3; }
-    .share-labels { display: flex; justify-content: space-between; color: var(--muted); font-size: 0.78rem; }
-    .split { display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem; margin: 0 0 1.25rem; }
-    .split .card { padding: 1.15rem 1.2rem 1.25rem; }
-    .steps { display: flex; flex-wrap: wrap; gap: 0.45rem; align-items: center; margin: 0.8rem 0 0.2rem; }
-    .step {
-      background: var(--soft);
-      color: var(--heading);
-      border-radius: 10px;
-      padding: 0.45rem 0.65rem;
-      font-size: 0.82rem;
-      font-weight: 700;
-    }
+    .stat p, .split p { font-size: 0.9rem; }
+    .split { display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; margin: 0 0 1.1rem; }
+    .split .card { padding: 1.1rem 1.15rem 1.15rem; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+    th, td { text-align: left; vertical-align: top; padding: 0.7rem 0.55rem; border-bottom: 1px solid var(--line); }
+    th { font-size: 0.72rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
+    ul { margin: 0.35rem 0 0; padding-left: 1.1rem; }
+    li { margin: 0.28rem 0; }
+    .steps { display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: center; margin: 0.7rem 0 0.2rem; }
+    .step { background: var(--soft); color: var(--heading); border-radius: 10px; padding: 0.4rem 0.6rem; font-size: 0.8rem; font-weight: 700; }
     .arrow { color: var(--blue); font-weight: 800; }
-    ul { margin: 0.4rem 0 0; padding-left: 1.1rem; }
-    li { margin: 0.25rem 0; }
     .sources { color: var(--muted); font-size: 0.86rem; }
-    @media (max-width: 680px) {
-      .found, .split, .hold, .bar-row { grid-template-columns: 1fr; }
+    a { color: var(--blue); }
+    @media (max-width: 740px) {
+      .found, .split, .bar-row { grid-template-columns: 1fr; }
       .bar-value { justify-self: start; }
     }
   </style>
 </head>
 <body>
   <header class="hero">
-    <p class="eyebrow">Hackathon report · 7 November 2026 · mesh-block-party</p>
-    <h1>How close is a weekly rent estimate, and is it the right flat?</h1>
+    <p class="eyebrow">Mesh Block Party · Microburbs hackathon · 7 November 2026</p>
+    <h1>Listing Lens: the right facts for the exact flat.</h1>
+    <p>We put unit-level facts beside the listing a person is already viewing. On 2,210 leases from April and May 2026, held out of training, our typical weekly miss was $52.44. The published Microburbs rent baseline is $86, and a suburb median is $100.</p>
   </header>
 
   <main>
-    <p class="lead">On leases from April and May 2026, held out from training, our typical miss was $52.44 a week. The organisers' Microburbs rent model missed by $86, and a suburb median missed by $100. Listing Lens puts an estimate beside a Domain or realestate.com.au listing only after the address matches one G-NAF unit.</p>
+    <p>Public repository and install steps: <a href="https://github.com/cryptotweezer/Microburbs_Hackathon">github.com/cryptotweezer/Microburbs_Hackathon</a>. Task 3 is the extension. It has no scored CSV. Task 4 is <code>rents_mesh-block-party.csv</code>, one row for each of 65,777 flats. This page uses the repository and the team's recorded checks. It is not a log of live listing visits.</p>
+
+    <p class="kicker">Task 3 · Chrome extension</p>
+    <section class="panel">
+      <h2>What buyers already see, and what we add</h2>
+      <p>realestate.com.au and Domain already show the advertised home: the asking price or a contact button, beds, baths and cars, photos, the map, the agent, and inspection times. Each also has a suburb page with median prices. A person browsing is looking at one flat. The suburb page answers a different question.</p>
+      <p>We did not review named Chrome Web Store extensions for this report, so we do not claim they lack a feature. Overlay tools in this category generally repeat the listing, or add a suburb summary, on top of the page. The failure that matters is a confident fact about the wrong home.</p>
+      <table>
+        <thead>
+          <tr><th>Experience</th><th>Already available</th><th>What Listing Lens adds</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>realestate.com.au</td>
+            <td>The listing itself, plus suburb medians on a separate page.</td>
+            <td>Facts only after one G-NAF unit matches. Valuation or fair rent, with a source and a date, beside that listing.</td>
+          </tr>
+          <tr>
+            <td>Domain</td>
+            <td>The same kind of listing page and suburb medians.</td>
+            <td>The same unit-level panel, including fair rent with and without a car space.</td>
+          </tr>
+          <tr>
+            <td>Browser extensions</td>
+            <td>Not named here. We have not audited a specific extension's feature list.</td>
+            <td>The panel stays empty until the unit is exact. An unclear address asks the user to choose.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="panel">
+      <h2>Why we chose these facts</h2>
+      <p>Someone on a listing is deciding whether to enquire. The facts are the questions that page does not answer for this unit.</p>
+      <p><strong>Price and rent.</strong> The asking price is set against the Microburbs valuation, a same-building sale, and nearby sales. A rental uses our model, with a car space and without. The point is to question the asking figure, not to treat it as the value.</p>
+      <p><strong>Confidence.</strong> High, Medium, or Low comes from the method, not from a made-up percentage. High is the Microburbs valuation or our rent model. Medium is a sale in the same building. Low is nearby comparables only, and the panel says to treat it as a rough guide. If there is no estimate, the ring is omitted and the overview says there is no estimate yet. A missing tile says "No data".</p>
+      <p><strong>Local context.</strong> Planning applications in the last 12 months, public housing, flood, heritage, and the nearest train, light rail, ferry, or bus stop. These are questions to investigate. An overlay is not an inspection. Public housing here is a nearby-area figure, not a check of who owns the flat. It is shown in the list and left out of the personal score.</p>
+      <p><strong>Your match.</strong> A rental is scored as a renter. A sale asks whether you are buying to live in or to invest. The score stays hidden until you move a slider or choose the suggested settings. Weights run from 0 to 5 for value for money, investment, getting around, low risk, and budget. Investment is omitted on a rental. The score is a weighted average of the factors that have both a weight above zero and a number. Missing factors are skipped, not filled in. Value uses asking price against our estimate, or the street against the suburb if there is no asking price. Investment uses gross yield against the suburb yield. Transport uses distance to rail, light rail, or ferry. Risk drops when an overlay sits on the property. Budget counts only if you type one: at or under budget scores 100, and each percent over budget costs 5 points. 70 and above is a strong fit, 45 to 69 is fair, below 45 is weak. The settings stay in this browser.</p>
+      <p><strong>Assistant.</strong> Answers about Microburbs fields cite those fields. A repayment question uses a separate calculator, labelled Listing Lens, not Microburbs. It is principal and interest. If you do not give terms, it uses a 20% deposit, 6% interest, and 30 years, and it says so. It can add the suburb's median strata levy per month. It excludes stamp duty, lender fees, mortgage insurance, council rates, and later rate changes.</p>
+    </section>
+
+    <div class="split">
+      <article class="card">
+        <h2>Data, method, and privacy</h2>
+        <div class="steps">
+          <span class="step">Address only</span>
+          <span class="arrow">→</span>
+          <span class="step">One G-NAF unit</span>
+          <span class="arrow">→</span>
+          <span class="step">API facts</span>
+        </div>
+        <p>The extension reads the address from the page in this order: JSON-LD, then the title or meta text, then the URL slug. It also keeps a sale or rent hint from the URL. It does not collect listing text or photos. You can type an address instead. Suburb, street number, street, and unit must all match. A lettered unit is tried both ways, such as B401 and 401B. If the match is only the building, a list of units, a withheld address, or outside the 29 City of Sydney suburbs, no facts load.</p>
+        <p>After a match, the backend calls Microburbs. The key stays on the server. Each figure on the overview keeps its source and date. Match preferences are stored in the browser and are not sent with the request.</p>
+      </article>
+      <article class="card">
+        <h2>What worked, and what did not</h2>
+        <p>Exact matching, a source on each number, and fair rent from the Task 4 model are in the product. Automated tests cover address fixtures, including the lettered-unit swap. They are not a pass rate on live portal pages. This repository has no log of judged listing URLs, expected G-NAF ids, and pass or fail results. Judges will open real listings and check the match themselves.</p>
+        <p>There was too much back and forth on which features to build. We could have managed our time better and started iterating sooner.</p>
+        <p>The team also recorded two product limits: the listings index does not cover every active ad in the largest suburbs, so some addresses fall through to the geocoder with no Microburbs asking price, and the valuation is missing often enough that many sales show Low confidence from comparables.</p>
+      </article>
+    </div>
+
+    <p class="kicker">Task 4 · What will the same flat rent for?</p>
+    <p>On 2,210 lease advertisements from April and May 2026, kept out of the features, the median absolute error was $52.44 a week. 74.8% were within $100. R² was 0.837. Those rows are inside the supplied file, before the 31 July 2026 cutoff. They are not the hidden August and September judging set of 1,699 ads.</p>
+
+    <div class="found">
+      <article class="card stat">
+        <p class="num">0.837</p>
+        <p>R². Share of weekly-rent variation explained on those 2,210 ads.</p>
+      </article>
+      <article class="card stat">
+        <p class="num">$52.44</p>
+        <p>Typical weekly miss. Median absolute error.</p>
+      </article>
+      <article class="card stat">
+        <p class="num">74.8%</p>
+        <p>Within $100 a week. The published Microburbs baseline is 55.2%.</p>
+      </article>
+    </div>
 
     <section class="panel" aria-label="Typical weekly miss">
-      <h2 class="chart-title">Typical weekly miss</h2>
-      <p class="chart-sub">Median absolute error. Lower is closer. The scale runs to $110 so the bars can be compared.</p>
-      <div class="legend">
-        <span><i class="swatch" style="background:#1e4fa3"></i>Our holdout</span>
-        <span><i class="swatch" style="background:#7aa2d6"></i>Published Microburbs baseline</span>
-        <span><i class="swatch" style="background:#b7cbe6"></i>Published suburb median</span>
-      </div>
+      <h2>Typical weekly miss</h2>
+      <p class="chart-sub">Median absolute error. Lower is closer. The scale runs to $110.</p>
       <div class="bars">
         <div class="bar-row">
           <span class="bar-label">Our model</span>
@@ -161,130 +210,59 @@
           <span class="bar-value">$100</span>
         </div>
       </div>
-      <p class="caption">Our bar is 2,210 leases from April and May 2026, with features stopped on 31 March. The $86 and $100 bars are the baselines published with the task. We did not re-score those baselines on the same rows.</p>
-    </section>
-
-    <h2>What we found along the way</h2>
-    <div class="found">
-      <article class="card stat">
-        <p class="num">$52.44 <span>a week</span></p>
-        <p>That is the median absolute error on our own later leases. R² on the same rows was 0.837. R² is the share of weekly-rent variation the estimate explains.</p>
-      </article>
-      <article class="card stat">
-        <p class="num">74.8% <span>within $100</span></p>
-        <p>The published Microburbs baseline was 55.2% within $100. A miss under $100 is the gap a tenant or landlord can still check against nearby ads.</p>
-      </article>
-    </div>
-
-    <section class="panel">
-      <h2>What our separate check showed</h2>
-      <p>We held out the 2,210 leases from April and May 2026 and did not use those rents to build or tune the estimate. Features for that check stop at 31 March 2026, and nothing after the 31 July 2026 cutoff is used anywhere.</p>
-      <div class="hold">
-        <div>
-          <p class="num">$52.44<span class="unit">a week</span></p>
-          <p class="caption">Typical miss, April and May 2026</p>
-        </div>
-        <div>
-          <p class="num">0.837</p>
-          <p class="caption">R² on that same holdout</p>
-        </div>
-      </div>
-      <div class="share" aria-hidden="true">
-        <div class="track"><div class="fill"></div></div>
-      </div>
-      <div class="share-labels">
-        <span>74.8% within $100</span>
-        <span>Microburbs baseline 55.2%</span>
-      </div>
-      <p>The official score uses 1,699 hidden advertisements from August and September 2026. We have not seen those rows. $52.44 is not that score.</p>
+      <p class="caption">Our bar is the April–May holdout. The $86 and $100 bars are the baselines published with the task. We did not re-score those baselines on these 2,210 rows, so this is not three scores on one file.</p>
     </section>
 
     <div class="split">
       <article class="card">
+        <h2>What we found along the way</h2>
+        <p>The model uses a flat's own earlier asking rent when it has one, and falls back to the building, the suburb, then the city when that history is thin. Parking is estimated separately so the file can show both scenarios. The unit's own history gets more weight as it has more prior leases, with shrinkage <code>n/(n+10)</code>.</p>
+        <p>On the earlier fold, February and March 2026, 1,777 leases, the blend of last rent and medians missed by $64.63. The LightGBM step was worse, at $68.84. The residual model helped the later fold and not the earlier one. That gain is real on one window and not guaranteed on the next.</p>
+      </article>
+      <article class="card">
+        <h2>What our separate check showed</h2>
+        <p>Features for the April–May check stop at 31 March 2026. Those 2,210 rents were not used to build or tune the estimate. An earlier fold stops features at 31 January and scores February and March. Real leases after 31 July 2026 are excluded. Synthetic scores only check that the pipeline runs. They are not the numbers above.</p>
+        <p>When a holdout advert has no parking flag, the internal score uses the midpoint of the with-parking and without-parking predictions. The submitted file does not do that. It has both rents for every flat. The organiser's hidden score may treat unknown parking differently. We did not use the hidden August–September file to build or tune anything.</p>
+      </article>
+    </div>
+
+    <div class="split">
+      <article class="card">
         <h2>What data supported the result?</h2>
-        <p>65,777 City of Sydney flats, their past lease advertisements, and mesh-block home counts. Weekly rent and the listing date are the history. Beds, baths, parking and building size come from the flat file.</p>
-        <p>Census block context (homes and new homes per block) is used as background for each building. The extension does not train on the API. At read time it sends the listing address to our backend, which calls Microburbs. The key stays on the server.</p>
+        <p>The official flat, lease, and block files. Each flat has a G-NAF id, building, suburb, mesh block, and bedrooms. Bathrooms, parking, floor, and building size are optional. Each lease row has the unit id, the advert date, and a weekly asking rent. Missing optional numbers stay missing for LightGBM or fall back through the median hierarchy.</p>
+        <p>The submitted file has 65,777 unique ids, the header <code>gnaf_id,rent_with_car_space,rent_without_car_space</code>, no blank ids, and no reversed pairs. Every rent is a positive finite number, and the with-parking rent is at least the without-parking rent. We do not publish a count of dropped duplicate lease rows here.</p>
       </article>
       <article class="card">
         <h2>How did we estimate rent?</h2>
-        <p>A target rent never enters its own features. History is only leases strictly before the cutoff.</p>
         <div class="steps">
-          <span class="step">Last lease and medians</span>
+          <span class="step">M0 medians</span>
           <span class="arrow">→</span>
-          <span class="step">Parking premium</span>
+          <span class="step">M1 last rent</span>
           <span class="arrow">→</span>
-          <span class="step">LightGBM residual</span>
+          <span class="step">M2 residual</span>
         </div>
-        <p>Medians fall back from the building and bedroom count, to the suburb, then the city. The unit's own last rent counts for more when that flat has more prior leases. LightGBM fits the leftover error on three earlier six-month windows. Exported rents are rounded to the nearest 50 cents, and the with-parking rent stays at least as high as the without-parking rent.</p>
+        <p>M0 is a time-adjusted median, from building, bedrooms, and parking, then suburb, city, and a global median. M1 blends the unit's adjusted last rent with a parking-normalised building estimate. M2 fits LightGBM, absolute-error objective, to the M1 residual on three earlier windows, each featurised from a snapshot before that window. Fewer than 100 residual rows falls back to M1. Parking premiums are nonnegative, pooled from the city toward the building, capped, and describe an observed gap, not a causal value of a car space. Weekly rents in the file are rounded to the nearest 50 cents.</p>
       </article>
     </div>
-
-    <div class="split">
-      <article class="card">
-        <h2>How does the panel know it is the right flat?</h2>
-        <div class="steps">
-          <span class="step">Listing address</span>
-          <span class="arrow">→</span>
-          <span class="step">One G-NAF unit</span>
-          <span class="arrow">→</span>
-          <span class="step">Estimate, source, date</span>
-        </div>
-        <p>Suburb, street number, street and unit all have to match. A lettered unit is tried both ways, such as B401 and 401B. If the match is only the building, a list of units, a withheld address, or outside the 29 City of Sydney suburbs, the panel stops and loads no facts.</p>
-      </article>
-      <article class="card">
-        <h2>How did we check it?</h2>
-        <p>Two dated folds, with features stopped on 31 January and on 31 March 2026, each predict the next two months. The number on this page is the later check: 2,210 leases from April and May, all before the 31 July cutoff.</p>
-        <p>On the earlier fold (February and March, 1,777 leases) the simpler blend of last rent and medians did best at $64.63, and the LightGBM step was slightly worse at $68.84. We report both instead of only the better one. R² was not published for the $86 and $100 baselines.</p>
-      </article>
-    </div>
-
-    <div class="split">
-      <article class="card">
-        <h2>What worked</h2>
-        <p>The panel stays empty until one G-NAF unit is certain, and each figure keeps its source and date. On a sale the first screen is the Microburbs valuation, the asking price, and a confidence level taken from the method. On a rental it is our model, with a car space and without.</p>
-        <p>The March holdout beat both published baselines on median absolute error: $52.44 against $86 and $100.</p>
-      </article>
-      <article class="card">
-        <h2>What did not work</h2>
-        <p>The LightGBM correction helped on the later fold but not on the earlier one, so its gain is real but not guaranteed.</p>
-        <p>The Microburbs listings endpoint returns at most 200 listings per suburb, so Sydney and Zetland are only partly indexed. Those listings fall back to the geocoder, which is slower and has no Microburbs asking price.</p>
-        <p>The Microburbs valuation covers only about a third of flats, so many sale listings show Low confidence from comparables.</p>
-        <p>We also spent too long deciding which features to build and could have started iterating sooner.</p>
-      </article>
-    </div>
-
-    <section class="panel">
-      <h2>What Domain and realestate.com.au already show</h2>
-      <p>Both sites already show the listing: the asking price or a contact button, beds, baths and cars, photos, the map, the agent, and inspection times. Both also have a suburb page with median prices.</p>
-      <p>The listing page does not put these next to the price, tied to one G-NAF unit, with a source and a date:</p>
-      <ul>
-        <li>the Microburbs valuation and its range, or fair rent with and without a car space</li>
-        <li>a sale in the same building, and how that agency's guides compare with later sale prices</li>
-        <li>this street's sold median against the suburb for the same bedrooms, and gross yield against the suburb yield</li>
-        <li>flood, heritage, public housing, and the nearest station or stop</li>
-        <li>a personal match score: on a sale, to live in or to invest; on a rental, as a renter. The weights stay in the browser</li>
-      </ul>
-    </section>
-
-    <section class="panel">
-      <h2>What other extensions tend to do</h2>
-      <p>Overlay extensions, and the portals' own apps, mostly repeat those listing fields or drop a suburb median onto the page. The usual failure is a confident fact about the wrong home: the building instead of the unit, or a neighbouring suburb with the same street name.</p>
-      <p>Listing Lens does not fill the panel in that case. It asks which unit, or it says the address is outside coverage. This is a description of that difference. We did not run a scored comparison against a named extension.</p>
-    </section>
 
     <section class="panel">
       <h2>What remains uncertain?</h2>
-      <p>The hidden August to September file is the score that counts for the task. Our $52.44 can be closer or further away from that number. The published baselines were not recomputed on our holdout rows, so the chart compares a measured miss with two published misses, not three scores on one file.</p>
+      <p>The number that counts for the task is the hidden August–September file. $52.44 can move either way against that file. Asking rent is not a signed lease. Sparse history, a shift in the market, and things we do not see, such as condition or outlook, can still miss by much more than $100. The LightGBM step already did that on the February–March fold.</p>
+      <p>We would next put a map next to the unit without loosening the match, explain a missing fact in the panel instead of a blank tile, and check any model change on a new dated cohort that was not used to pick M2.</p>
     </section>
 
     <section class="sources">
-      <h2>Sources</h2>
+      <h2>Sources, attribution, and reproducibility</h2>
       <ul>
-        <li>Organisers' rents task: Microburbs rent model, median absolute error $86 a week; suburb median, $100 a week. The 55.2% within $100 figure is the baseline stored with our checker, not a number we remeasured.</li>
-        <li>Our holdout, recorded when the model was run on the organisers' files: median absolute error $52.44 a week, 74.8% within $100, R² 0.837, on leases after 31 March 2026.</li>
-        <li>Flat file: 65,777 City of Sydney addresses. Features stop at 31 July 2026.</li>
-        <li>Data: Microburbs API and the organisers' task files. Addresses are matched with G-NAF, © Geoscape Australia, licensed under the Open G-NAF End User Licence Agreement. Census block figures are from the Australian Bureau of Statistics, CC BY 4.0.</li>
+        <li>Repository: <a href="https://github.com/cryptotweezer/Microburbs_Hackathon">cryptotweezer/Microburbs_Hackathon</a>. Product behaviour is the README and the extension code. The rent method is <code>ml/README.md</code>. Predictions are <code>rents_mesh-block-party.csv</code>.</li>
+        <li>Holdout recorded by the team: April–May 2026, 2,210 leases, median absolute error $52.44, 74.8% within $100, R² 0.837. February–March 2026, 1,777 leases, $64.63 without the residual step and $68.84 with it. Features for those checks stop at 31 March and 31 January.</li>
+        <li>Organisers' baselines, not remeasured here: Microburbs rent model $86 a week and 55.2% within $100. Suburb median $100 a week. R² was not published for those baselines.</li>
+        <li>Microburbs API and the supplied task files, © Microburbs. Supplied files and API output are not republished. Block home counts are estimates used as model features, not a new Census release.</li>
+        <li>Addresses matched with G-NAF, © Geoscape Australia, licensed under the Open G-NAF End User Licence Agreement.</li>
+        <li>Census geography referenced by the block file: © Commonwealth of Australia, Australian Bureau of Statistics, CC BY 4.0.</li>
+        <li>Planning, flood, heritage, and transport figures in the panel come from the Microburbs API at read time. This page does not attach a separate licence for those layers.</li>
       </ul>
+      <p>Task pages: <a href="https://www.microburbs.com.au/p/hackathon-guide">participant guide</a>, <a href="https://www.microburbs.com.au/p/hackathon-task-chrome-extension">extension</a>, <a href="https://www.microburbs.com.au/p/hackathon-task-rents">rents</a>, <a href="https://www.microburbs.com.au/p/hackathon-example-rent-report">example rent report</a>.</p>
     </section>
   </main>
 </body>
