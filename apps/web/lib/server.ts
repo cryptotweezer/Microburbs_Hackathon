@@ -12,11 +12,12 @@ import { createClient, MicroburbsError, type MicroburbsClient } from "./microbur
 
 const num = (v: string | undefined, d: number) => (v && Number.isFinite(Number(v)) ? Number(v) : d);
 export const LIMITS = {
-  perIpPerMin: num(process.env.RATE_LIMIT_PER_MIN, 30),
-  perIpPerDay: num(process.env.RATE_LIMIT_PER_DAY, 600),
-  chatPerIpPerMin: num(process.env.CHAT_LIMIT_PER_MIN, 6),
-  chatPerIpPerDay: num(process.env.CHAT_LIMIT_PER_DAY, 60),
-  chatGlobalPerDay: num(process.env.CHAT_GLOBAL_PER_DAY, 1500),
+  // Generous defaults: a whole venue (judges, team, audience) can share one public IP.
+  perIpPerMin: num(process.env.RATE_LIMIT_PER_MIN, 300),
+  perIpPerDay: num(process.env.RATE_LIMIT_PER_DAY, 20000),
+  chatPerIpPerMin: num(process.env.CHAT_LIMIT_PER_MIN, 40),
+  chatPerIpPerDay: num(process.env.CHAT_LIMIT_PER_DAY, 1500),
+  chatGlobalPerDay: num(process.env.CHAT_GLOBAL_PER_DAY, 5000),
   /** Hard stop on Microburbs spend for the whole backend, in cents per UTC day. */
   dailySpendCents: num(process.env.DAILY_SPEND_CENTS, 800),
   /** Paid Microburbs calls one request may trigger (cache hits are free and not counted). */
