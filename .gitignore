@@ -1,6 +1,8 @@
 # Internal and planning docs
 CLAUDE.md
 AGENTS.md
+.agents/
+skills-lock.json
 plan.md
 claude_review.md
 codex_review.md
