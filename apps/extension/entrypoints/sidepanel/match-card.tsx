@@ -5,17 +5,19 @@ import type { Mode, PropertyResponse } from "@/lib/api";
 import { FACTOR_LABEL, type FactorKey, matchScore, type MatchInputs, PRESETS, type Profile, scoreFactors, type Weights } from "@/lib/match";
 import type { LocalData } from "./overview";
 
+// The listing decides sale vs rent: rentals are always scored as a renter; on a sale only the user knows
+// whether they are buying to live in or to invest. Preferences are saved separately for each.
 interface Prefs {
   profile: Profile;
   weights: Weights;
-  budgetSale: number | null;
-  budgetRent: number | null;
+  budget: number | null;
 }
-const KEY = "match:v1";
+const keyFor = (mode: Mode) => `match:v2:${mode}`;
 const defaults = (mode: Mode): Prefs => {
   const profile: Profile = mode === "rent" ? "renter" : "buyer";
-  return { profile, weights: { ...PRESETS[profile] }, budgetSale: null, budgetRent: null };
+  return { profile, weights: { ...PRESETS[profile] }, budget: null };
 };
+const validFor = (mode: Mode, p: Profile) => (mode === "rent" ? p === "renter" : p !== "renter");
 
 type RiskRow = { name?: string | null; on_property?: boolean | null; nearest_distance_m?: number | null };
 const IGNORED_LAYERS = new Set(["public_housing", "mobile_black_spot"]);
@@ -58,13 +60,12 @@ export function MatchCard({ data, mode, local }: { data: PropertyResponse; mode:
   // Load saved preferences once; any storage failure just keeps the defaults.
   useEffect(() => {
     browser.storage.local
-      .get(KEY)
+      .get(keyFor(mode))
       .then((r) => {
-        const saved = r[KEY] as Prefs | undefined;
-        if (saved?.weights) {
+        const saved = r[keyFor(mode)] as Prefs | undefined;
+        if (saved?.weights && validFor(mode, saved.profile)) {
           setPrefs(saved);
-          const b = mode === "rent" ? saved.budgetRent : saved.budgetSale;
-          if (b) setBudgetRaw(String(b));
+          if (saved.budget) setBudgetRaw(String(saved.budget));
         }
       })
       .catch(() => {});
@@ -72,10 +73,10 @@ export function MatchCard({ data, mode, local }: { data: PropertyResponse; mode:
   }, []);
   const save = (p: Prefs) => {
     setPrefs(p);
-    void browser.storage.local.set({ [KEY]: p }).catch(() => {});
+    void browser.storage.local.set({ [keyFor(mode)]: p }).catch(() => {});
   };
 
-  const budget = mode === "rent" ? prefs.budgetRent : prefs.budgetSale;
+  const budget = prefs.budget;
   const factors = useMemo(() => scoreFactors(inputsFrom(data, mode, local, budget)), [data, mode, local, budget]);
   const score = matchScore(factors, prefs.weights);
   const shown = factors.filter((f) => (prefs.weights[f.key] ?? 0) > 0);
@@ -84,24 +85,26 @@ export function MatchCard({ data, mode, local }: { data: PropertyResponse; mode:
     setBudgetRaw(raw);
     const n = Number(raw.replace(/[^0-9.]/g, "")) * (/k$/i.test(raw.trim()) ? 1000 : /m$/i.test(raw.trim()) ? 1_000_000 : 1);
     const value = Number.isFinite(n) && n > 0 ? Math.round(n) : null;
-    save(mode === "rent" ? { ...prefs, budgetRent: value } : { ...prefs, budgetSale: value });
+    save({ ...prefs, budget: value });
   };
 
   return (
     <div className="rounded-xl border border-brand-200 bg-white p-3">
       <div className="flex items-center justify-between gap-2">
-        <p className="text-xs font-semibold text-brand-800">Your match</p>
+        <p className="text-xs font-semibold text-brand-800">Your match{mode === "rent" ? " as a renter" : ""}</p>
+        {mode === "sale" ? (
         <div className="flex rounded-lg bg-slate-100 p-0.5 text-[11px]">
-          {(["buyer", "investor", "renter"] as const).map((p) => (
+          {(["buyer", "investor"] as const).map((p) => (
             <button
               key={p}
               onClick={() => save({ ...prefs, profile: p, weights: { ...PRESETS[p] } })}
               className={`rounded-md px-2 py-0.5 font-medium capitalize ${prefs.profile === p ? "bg-white text-brand-800 shadow-sm" : "text-slate-500 hover:text-slate-700"}`}
             >
-              {p}
+              {p === "buyer" ? "To live in" : "To invest"}
             </button>
           ))}
         </div>
+        ) : null}
       </div>
 
       {score !== null ? (
