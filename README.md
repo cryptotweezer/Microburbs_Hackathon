@@ -88,7 +88,7 @@ Most tools show facts for the building or the suburb. Listing Lens resolves the 
 
 ## Task 4: flat rents
 
-`rents_mesh-block-party.csv` has a weekly rent with and without a car space for all 65,777 flats. On our own time holdout (2,210 leases from April and May 2026, features stopped at 31 March) the median absolute error was $52.44 a week, 74.8% within $100, R² 0.837, against the published $86 and 55.2% for the Microburbs model. Method and limits are in [report.html](report.html). The pipeline is in `ml/` (`cd ml && uv run pytest`).
+`rents_mesh-block-party.csv` has a weekly rent with and without a car space for all 65,777 flats. On our own time holdout (2,210 leases from April and May 2026, features stopped at 31 March) the median absolute error was $52.44 a week, 74.8% within $100, R² 0.837, against the published $86 and 55.2% for the Microburbs model. Method and limits are in [report.html](report.html). The pipeline is in `ml/` (`cd ml && uv run pytest`). The organisers' Task 4 files are not committed; to rebuild the CSV, put them in `data/raw/task4/` and follow [ml/README.md](ml/README.md).
 
 ## Data and credits
 
