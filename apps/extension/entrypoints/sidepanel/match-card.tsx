@@ -57,6 +57,7 @@ const fit = (s: number) => (s >= 70 ? "Strong fit for you" : s >= 45 ? "Fair fit
 export function MatchCard({ data, mode, local }: { data: PropertyResponse; mode: Mode; local: LocalData }) {
   const [prefs, setPrefs] = useState<Prefs>(() => defaults(mode));
   const [open, setOpen] = useState(false);
+  const [why, setWhy] = useState(false);
   const [budgetRaw, setBudgetRaw] = useState("");
 
   // Load saved preferences once; any storage failure just keeps the defaults.
@@ -128,7 +129,12 @@ export function MatchCard({ data, mode, local }: { data: PropertyResponse; mode:
         <p className="mt-1 text-sm text-slate-500">Not enough data yet to score this property for you.</p>
       )}
 
-      <ul className={ready ? "mt-2 space-y-1.5" : "hidden"}>
+      {ready ? (
+        <button onClick={() => setWhy(!why)} className="mt-1 text-[11px] font-medium text-slate-500 hover:text-slate-700" aria-expanded={why}>
+          {why ? "Hide why" : "Why this score?"} {why ? "▴" : "▾"}
+        </button>
+      ) : null}
+      <ul className={ready && why ? "mt-2 space-y-1.5" : "hidden"}>
         {shown.map((f) => (
           <li key={f.key}>
             <div className="flex items-center justify-between text-[11px]">
