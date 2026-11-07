@@ -64,15 +64,15 @@ The panel reads top to bottom.
 
 **Header.** The address from the listing, whether it matched, and whether the listing is for sale or for rent. For sale or for rent comes from Microburbs' own listings index. If the property is not in that index, the panel says the mode is a guess and lets you switch it. You can also type an address and press Check.
 
-**Address match.** A clear listing resolves to one G-NAF unit and the overview opens. An unclear one stops on an address card: building only, a list of units to pick from, an address the portal withheld, or outside the 29 City of Sydney suburbs. Nothing below that card loads until the unit is exact.
+**Address match.** A clear listing resolves to one G-NAF unit and the overview opens. An unclear one stops on an address card: a list of units to pick from, an address the portal withheld, or outside the 29 City of Sydney suburbs. Nothing below that card loads until a unit is chosen. A typed address with no unit is a known limit: G-NAF has a record for the building itself, so that match shows building-level data instead of asking which unit.
 
 **Overview.** The matched address, beds, baths, cars, size, and G-NAF id. Then the estimate: Microburbs valuation for a sale, or fair rent from our model for a rental (with a car space and without). The range sits under the figure. Confidence is High, Medium, or Low from the method behind it: the valuation or rent model, a sale in the same building, or nearby comparables only. The asking price is shown against that estimate. If Microburbs has no asking price, you can type the one on the portal. On a sale, a line under the estimate gives the likely sale price from how that agency usually quotes.
 
-**Your match.** The listing decides the profile: a rental is scored as a renter, and a sale asks whether you are buying to live in or to invest. The first time, you only see sliders for value for money, investment, transport, risk, and budget, plus an optional budget; the score appears once you set them (or pick the suggested settings). Investment is left off for a rental. The score is calculated in the browser from facts already on the panel, and the settings stay in this browser.
+**Your match.** The listing decides the profile: a rental is scored as a renter, and a sale asks whether you are buying to live in or to invest. Sliders for value for money, investment, transport, risk, and budget stay visible, plus an optional budget. The score appears once you move a slider or pick the suggested settings. Investment is left off for a rental. The score is calculated in the browser from facts already on the panel, and the settings stay in this browser.
 
 **Tiles and local context.** Four tiles: for a sale, the same-building or best comparable, the range of nearby sales, this street against the suburb, and gross yield against the suburb yield. For a rental, fair rent with and without a car space, the last lease, and the asking rent. Under the tiles: planning applications in the suburb over 12 months, public housing, flood, heritage, and the nearest train, light rail, ferry, or bus stop. A button scrolls to the full report. Every figure on the overview keeps its source and date.
 
-**Microburbs Agent.** A chat under the overview. Suggested questions cover price, cheaper options, repayments, suburb comparisons, the agency, the street, yield, and the block. Answers use cited Microburbs data. On a rental the suggestions switch to rent, transport, and risks.
+**Microburbs Agent.** A chat under the overview. Suggested questions cover price, cheaper options, repayments, suburb comparisons, the agency, the street, yield, and the block. Answers use cited Microburbs data. On a rental the suggestions switch to rent, transport, and risks. The assistant does not see the match sliders yet. Using those preferences in the chat is a next step.
 
 **Better-value alternatives.** Up to three similar listings nearby, with the saving, beds and baths, size, price per square metre, and distance. Each one can be opened on Domain or checked in the panel. If the listing has no asking price, the card shows similar listings instead of cheaper ones.
 
@@ -84,7 +84,7 @@ Buyers and renters looking at a City of Sydney flat who want to know, beside the
 
 ## The clever step
 
-Most tools show facts for the building or the suburb. Listing Lens resolves the listing to one G-NAF unit first and refuses to show anything until that match is certain, so every number is about the flat on screen. The same unit-level rent model that we built for Task 4 drives the fair rent in the panel.
+Most tools show facts for the building or the suburb. Listing Lens resolves a full listing address to one G-NAF unit first, and stops to ask when that unit is unclear, so the numbers are about the flat on screen. A typed address with no unit still matches the building record. The same unit-level rent model that we built for Task 4 drives the fair rent in the panel.
 
 ## Task 4: flat rents
 
