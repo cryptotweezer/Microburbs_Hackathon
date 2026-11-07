@@ -8,9 +8,9 @@ Built for the Microburbs hackathon, 7 November 2026 (Task 3, Chrome extension; T
 
 These are the real side-panel components, filled with a sample listing at Unit 105, 8 Sam Sing Street, Waterloo, so the layout is visible here. On a live listing the numbers come from the Microburbs API, and each one keeps its source and date.
 
-The address is matched to one G-NAF unit. The price check compares the asking price with the Microburbs valuation, then adds a street check and a rent yield.
+The address is matched to one G-NAF unit. The overview shows the Microburbs estimate and its confidence, your match, then the street, yield, and local context.
 
-![Price check for a matched unit](assets/price-check.png)
+![Overview for a matched unit](assets/price-check.png)
 
 Cheaper like-for-like listings nearby, with the saving, size and price per square metre.
 
