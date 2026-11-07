@@ -11,6 +11,8 @@ interface Prefs {
   profile: Profile;
   weights: Weights;
   budget: number | null;
+  /** True once the user has set anything; the score stays hidden until then. */
+  touched?: boolean;
 }
 const keyFor = (mode: Mode) => `match:v2:${mode}`;
 const defaults = (mode: Mode): Prefs => {
@@ -72,9 +74,12 @@ export function MatchCard({ data, mode, local }: { data: PropertyResponse; mode:
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const save = (p: Prefs) => {
-    setPrefs(p);
-    void browser.storage.local.set({ [keyFor(mode)]: p }).catch(() => {});
+    const next = { ...p, touched: true };
+    setPrefs(next);
+    void browser.storage.local.set({ [keyFor(mode)]: next }).catch(() => {});
   };
+  const ready = !!prefs.touched;
+  const showSliders = open || !ready;
 
   const budget = prefs.budget;
   const factors = useMemo(() => scoreFactors(inputsFrom(data, mode, local, budget)), [data, mode, local, budget]);
@@ -91,7 +96,7 @@ export function MatchCard({ data, mode, local }: { data: PropertyResponse; mode:
   return (
     <div className="rounded-xl border border-brand-200 bg-white p-3">
       <div className="flex items-center justify-between gap-2">
-        <p className="text-xs font-semibold text-brand-800">Your match{mode === "rent" ? " as a renter" : ""}</p>
+        <p className="text-xs font-semibold text-brand-800">{ready ? `Your match${mode === "rent" ? " as a renter" : ""}` : "What matters to you?"}</p>
         {mode === "sale" ? (
         <div className="flex rounded-lg bg-slate-100 p-0.5 text-[11px]">
           {(["buyer", "investor"] as const).map((p) => (
@@ -107,7 +112,14 @@ export function MatchCard({ data, mode, local }: { data: PropertyResponse; mode:
         ) : null}
       </div>
 
-      {score !== null ? (
+      {!ready ? (
+        <p className="mt-1 text-[11px] leading-snug text-slate-600">
+          Move a slider to see how well this place fits you.{" "}
+          <button onClick={() => save(prefs)} className="font-medium text-brand-600 underline hover:text-brand-800">
+            Use suggested settings
+          </button>
+        </p>
+      ) : score !== null ? (
         <p className="mt-1 flex items-baseline gap-2">
           <span className={`text-3xl font-extrabold ${tone(score)}`}>{score}%</span>
           <span className="text-xs text-slate-600">{fit(score)}</span>
@@ -116,7 +128,7 @@ export function MatchCard({ data, mode, local }: { data: PropertyResponse; mode:
         <p className="mt-1 text-sm text-slate-500">Not enough data yet to score this property for you.</p>
       )}
 
-      <ul className="mt-2 space-y-1.5">
+      <ul className={ready ? "mt-2 space-y-1.5" : "hidden"}>
         {shown.map((f) => (
           <li key={f.key}>
             <div className="flex items-center justify-between text-[11px]">
@@ -131,10 +143,12 @@ export function MatchCard({ data, mode, local }: { data: PropertyResponse; mode:
         ))}
       </ul>
 
-      <button onClick={() => setOpen(!open)} className="mt-2 text-[11px] font-medium text-brand-600 hover:text-brand-800" aria-expanded={open}>
-        {open ? "Hide" : "Adjust"} what matters to you {open ? "▴" : "▾"}
-      </button>
-      {open ? (
+      {ready ? (
+        <button onClick={() => setOpen(!open)} className="mt-2 text-[11px] font-medium text-brand-600 hover:text-brand-800" aria-expanded={open}>
+          {open ? "Hide" : "Adjust"} what matters to you {open ? "▴" : "▾"}
+        </button>
+      ) : null}
+      {showSliders ? (
         <div className="mt-2 space-y-2 rounded-lg bg-slate-50 p-2">
           {(Object.keys(FACTOR_LABEL) as FactorKey[])
             .filter((k) => !(k === "investment" && mode === "rent"))
