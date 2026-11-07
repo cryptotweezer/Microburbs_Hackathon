@@ -56,7 +56,6 @@ const fit = (s: number) => (s >= 70 ? "Strong fit for you" : s >= 45 ? "Fair fit
 
 export function MatchCard({ data, mode, local }: { data: PropertyResponse; mode: Mode; local: LocalData }) {
   const [prefs, setPrefs] = useState<Prefs>(() => defaults(mode));
-  const [open, setOpen] = useState(false);
   const [why, setWhy] = useState(false);
   const [budgetRaw, setBudgetRaw] = useState("");
 
@@ -80,7 +79,7 @@ export function MatchCard({ data, mode, local }: { data: PropertyResponse; mode:
     void browser.storage.local.set({ [keyFor(mode)]: next }).catch(() => {});
   };
   const ready = !!prefs.touched;
-  const showSliders = open || !ready;
+  const showSliders = true; // Sliders stay visible: changing them is how the user sets the match.
 
   const budget = prefs.budget;
   const factors = useMemo(() => scoreFactors(inputsFrom(data, mode, local, budget)), [data, mode, local, budget]);
@@ -149,11 +148,6 @@ export function MatchCard({ data, mode, local }: { data: PropertyResponse; mode:
         ))}
       </ul>
 
-      {ready ? (
-        <button onClick={() => setOpen(!open)} className="mt-2 text-[11px] font-medium text-brand-600 hover:text-brand-800" aria-expanded={open}>
-          {open ? "Hide" : "Adjust"} what matters to you {open ? "▴" : "▾"}
-        </button>
-      ) : null}
       {showSliders ? (
         <div className="mt-2 space-y-2 rounded-lg bg-slate-50 p-2">
           {(Object.keys(FACTOR_LABEL) as FactorKey[])
