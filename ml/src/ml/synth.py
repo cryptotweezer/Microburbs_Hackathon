@@ -66,6 +66,8 @@ def write_inputs(config, n=65777):
     folder = config['paths']['raw'] / 'synthetic'
     folder.mkdir(parents=True, exist_ok=True)
     for name, frame in zip(('flats', 'leases', 'blocks'), generate(n, config['seed'])):
+        # Write with the raw column names from config, so synthetic files look like the organisers' files.
+        frame = frame.rename(columns=config['columns'].get(name, {}))
         frame.to_csv(folder / config['files'][name], index=False)
     print(f'Generated {n:,} synthetic flats in {folder}')
 
