@@ -55,7 +55,7 @@
     h2 { margin: 0 0 0.7rem; color: var(--heading); font-size: 1.15rem; font-weight: 800; }
     h3 { margin: 0 0 0.45rem; color: var(--heading); font-size: 1rem; font-weight: 800; }
     p { margin: 0.55rem 0; }
-    .kicker { margin: 1.6rem 0 0.7rem; color: var(--blue); font-size: 0.78rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; }
+    .kicker { margin: 2.1rem 0 0.85rem; color: var(--heading); font-size: clamp(1.55rem, 3vw, 1.9rem); font-weight: 800; letter-spacing: -0.02em; line-height: 1.2; }
     .card, .panel {
       background: var(--card);
       border: 1px solid var(--line);
@@ -110,13 +110,12 @@
   </header>
 
   <main>
-    <p>Public repository and install steps: <a href="https://github.com/cryptotweezer/Microburbs_Hackathon">github.com/cryptotweezer/Microburbs_Hackathon</a>. Task 3 is the extension. It has no scored CSV. Task 4 is <code>rents_mesh-block-party.csv</code>, one row for each of 65,777 flats. This page uses the repository and the team's recorded checks. It is not a log of live listing visits.</p>
+    <p>Code and install: <a href="https://github.com/cryptotweezer/Microburbs_Hackathon">github.com/cryptotweezer/Microburbs_Hackathon</a>. Task 3 has no scored CSV. Task 4 is <code>rents_mesh-block-party.csv</code>, 65,777 flats. These figures come from the repo and the team's checks, not live listing visits.</p>
 
-    <p class="kicker">Task 3 · Chrome extension</p>
+    <h2 class="kicker">Task 3 · Chrome extension</h2>
     <section class="panel">
       <h2>What buyers already see, and what we add</h2>
-      <p>realestate.com.au and Domain already show the advertised home: the asking price or a contact button, beds, baths and cars, photos, the map, the agent, and inspection times. Each also has a suburb page with median prices. A person browsing is looking at one flat. The suburb page answers a different question.</p>
-      <p>We did not review named Chrome Web Store extensions for this report, so we do not claim they lack a feature. Overlay tools in this category generally repeat the listing, or add a suburb summary, on top of the page. The failure that matters is a confident fact about the wrong home.</p>
+      <p>realestate.com.au and Domain already show the listing: price or contact, beds, baths, cars, photos, map, agent, and inspections, plus suburb medians on another page. We did not audit named Chrome extensions, so we do not claim they lack a feature. Overlays in this category usually repeat the listing or add a suburb summary. The failure that matters is a fact about the wrong home.</p>
       <table>
         <thead>
           <tr><th>Experience</th><th>Already available</th><th>What Listing Lens adds</th></tr>
@@ -143,12 +142,12 @@
 
     <section class="panel">
       <h2>Why we chose these facts</h2>
-      <p>Someone on a listing is deciding whether to enquire. The facts are the questions that page does not answer for this unit.</p>
-      <p><strong>Price and rent.</strong> The asking price is set against the Microburbs valuation, a same-building sale, and nearby sales. A rental uses our model, with a car space and without. The point is to question the asking figure, not to treat it as the value.</p>
-      <p><strong>Confidence.</strong> High, Medium, or Low comes from the method, not from a made-up percentage. High is the Microburbs valuation or our rent model. Medium is a sale in the same building. Low is nearby comparables only, and the panel says to treat it as a rough guide. If there is no estimate, the ring is omitted and the overview says there is no estimate yet. A missing tile says "No data".</p>
-      <p><strong>Local context.</strong> Planning applications in the last 12 months, public housing, flood, heritage, and the nearest train, light rail, ferry, or bus stop. These are questions to investigate. An overlay is not an inspection. Public housing here is a nearby-area figure, not a check of who owns the flat. It is shown in the list and left out of the personal score.</p>
-      <p><strong>Your match.</strong> A rental is scored as a renter. A sale asks whether you are buying to live in or to invest. The score stays hidden until you move a slider or choose the suggested settings. Weights run from 0 to 5 for value for money, investment, getting around, low risk, and budget. Investment is omitted on a rental. The score is a weighted average of the factors that have both a weight above zero and a number. Missing factors are skipped, not filled in. Value uses asking price against our estimate, or the street against the suburb if there is no asking price. Investment uses gross yield against the suburb yield. Transport uses distance to rail, light rail, or ferry. Risk drops when an overlay sits on the property. Budget counts only if you type one: at or under budget scores 100, and each percent over budget costs 5 points. 70 and above is a strong fit, 45 to 69 is fair, below 45 is weak. The settings stay in this browser.</p>
-      <p><strong>Assistant.</strong> Answers about Microburbs fields cite those fields. A repayment question uses a separate calculator, labelled Listing Lens, not Microburbs. It is principal and interest. If you do not give terms, it uses a 20% deposit, 6% interest, and 30 years, and it says so. It can add the suburb's median strata levy per month. It excludes stamp duty, lender fees, mortgage insurance, council rates, and later rate changes.</p>
+      <p>The person is deciding whether to enquire. These are the questions the listing page does not answer for this unit.</p>
+      <p><strong>Price and rent.</strong> Asking price against the Microburbs valuation, a same-building sale, and nearby sales. A rental uses our model, with a car space and without.</p>
+      <p><strong>Confidence.</strong> High, Medium, or Low comes from the method. High is the valuation or our rent model. Medium is a same-building sale. Low is nearby comparables only. No estimate means no ring. A missing tile says "No data".</p>
+      <p><strong>Local context.</strong> Planning applications, public housing, flood, heritage, and the nearest station or stop. An overlay is not an inspection. Public housing is a nearby-area figure, shown in the list and left out of the score.</p>
+      <p><strong>Your match.</strong> A rental is scored as a renter. A sale asks to live in or to invest. The score stays hidden until a slider moves or the suggested settings are chosen. Weights are 0 to 5. Missing factors are skipped. 70 and above is a strong fit, 45 to 69 is fair, and below 45 is weak. Settings stay in the browser.</p>
+      <p><strong>Assistant.</strong> Microburbs answers cite their source. Repayments are a separate Listing Lens calculator: principal and interest, defaulting to a 20% deposit, 6% interest, and 30 years. It can add median strata. It excludes stamp duty, fees, and later rate changes.</p>
     </section>
 
     <div class="split">
@@ -161,19 +160,18 @@
           <span class="arrow">→</span>
           <span class="step">API facts</span>
         </div>
-        <p>The extension reads the address from the page in this order: JSON-LD, then the title or meta text, then the URL slug. It also keeps a sale or rent hint from the URL. It does not collect listing text or photos. You can type an address instead. Suburb, street number, street, and unit must all match. A lettered unit is tried both ways, such as B401 and 401B. If the match is only the building, a list of units, a withheld address, or outside the 29 City of Sydney suburbs, no facts load.</p>
-        <p>After a match, the backend calls Microburbs. The key stays on the server. Each figure on the overview keeps its source and date. Match preferences are stored in the browser and are not sent with the request.</p>
+        <p>The page gives up an address only: JSON-LD, then the title, then the URL. Listing text and photos are not collected. You can type an address. Suburb, number, street, and unit must all match, including B401 and 401B. Anything less loads no facts. The key stays on the server. Each overview figure keeps its source and date. Match settings stay in the browser.</p>
       </article>
       <article class="card">
         <h2>What worked, and what did not</h2>
-        <p>Exact matching, a source on each number, and fair rent from the Task 4 model are in the product. Automated tests cover address fixtures, including the lettered-unit swap. They are not a pass rate on live portal pages. This repository has no log of judged listing URLs, expected G-NAF ids, and pass or fail results. Judges will open real listings and check the match themselves.</p>
-        <p>There was too much back and forth on which features to build. We could have managed our time better and started iterating sooner.</p>
-        <p>The team also recorded two product limits: the listings index does not cover every active ad in the largest suburbs, so some addresses fall through to the geocoder with no Microburbs asking price, and the valuation is missing often enough that many sales show Low confidence from comparables.</p>
+        <p>Exact match, a source on each number, and fair rent are in the product. Tests cover address fixtures, not live portal pages. There is no log of judged listing URLs.</p>
+        <p>There was too much back and forth on which features to build. We could have started iterating sooner.</p>
+        <p>The listings index misses some ads in the largest suburbs, so those fall through to the geocoder with no asking price. The valuation is often missing, so many sales show Low confidence.</p>
       </article>
     </div>
 
-    <p class="kicker">Task 4 · What will the same flat rent for?</p>
-    <p>On 2,210 lease advertisements from April and May 2026, kept out of the features, the median absolute error was $52.44 a week. 74.8% were within $100. R² was 0.837. Those rows are inside the supplied file, before the 31 July 2026 cutoff. They are not the hidden August and September judging set of 1,699 ads.</p>
+    <h2 class="kicker">Task 4 · What will the same flat rent for?</h2>
+    <p>On 2,210 leases from April and May 2026, kept out of training, the typical miss was $52.44 a week. That is not the hidden August–September set of 1,699 ads.</p>
 
     <div class="found">
       <article class="card stat">
@@ -210,27 +208,26 @@
           <span class="bar-value">$100</span>
         </div>
       </div>
-      <p class="caption">Our bar is the April–May holdout. The $86 and $100 bars are the baselines published with the task. We did not re-score those baselines on these 2,210 rows, so this is not three scores on one file.</p>
+      <p class="caption">Our bar is the April–May holdout. The $86 and $100 bars are the published baselines, not re-scored on these 2,210 rows.</p>
     </section>
 
     <div class="split">
       <article class="card">
         <h2>What we found along the way</h2>
-        <p>The model uses a flat's own earlier asking rent when it has one, and falls back to the building, the suburb, then the city when that history is thin. Parking is estimated separately so the file can show both scenarios. The unit's own history gets more weight as it has more prior leases, with shrinkage <code>n/(n+10)</code>.</p>
-        <p>On the earlier fold, February and March 2026, 1,777 leases, the blend of last rent and medians missed by $64.63. The LightGBM step was worse, at $68.84. The residual model helped the later fold and not the earlier one. That gain is real on one window and not guaranteed on the next.</p>
+        <p>A flat's own earlier rent is used when it exists, then the building, suburb, and city. Parking is a separate scenario. On 1,777 February–March leases the median blend missed by $64.63, and the LightGBM step was worse at $68.84. It helped the later fold only.</p>
       </article>
       <article class="card">
         <h2>What our separate check showed</h2>
-        <p>Features for the April–May check stop at 31 March 2026. Those 2,210 rents were not used to build or tune the estimate. An earlier fold stops features at 31 January and scores February and March. Real leases after 31 July 2026 are excluded. Synthetic scores only check that the pipeline runs. They are not the numbers above.</p>
-        <p>When a holdout advert has no parking flag, the internal score uses the midpoint of the with-parking and without-parking predictions. The submitted file does not do that. It has both rents for every flat. The organiser's hidden score may treat unknown parking differently. We did not use the hidden August–September file to build or tune anything.</p>
+        <p>April–May features stop at 31 March. February–March features stop at 31 January. Nothing after 31 July 2026 is used. Synthetic runs are not these scores.</p>
+        <p>If a holdout ad has no parking flag, the internal score uses the midpoint of the two rents. The file itself has both rents for every flat. The hidden file was not used.</p>
       </article>
     </div>
 
     <div class="split">
       <article class="card">
         <h2>What data supported the result?</h2>
-        <p>The official flat, lease, and block files. Each flat has a G-NAF id, building, suburb, mesh block, and bedrooms. Bathrooms, parking, floor, and building size are optional. Each lease row has the unit id, the advert date, and a weekly asking rent. Missing optional numbers stay missing for LightGBM or fall back through the median hierarchy.</p>
-        <p>The submitted file has 65,777 unique ids, the header <code>gnaf_id,rent_with_car_space,rent_without_car_space</code>, no blank ids, and no reversed pairs. Every rent is a positive finite number, and the with-parking rent is at least the without-parking rent. We do not publish a count of dropped duplicate lease rows here.</p>
+        <p>Flat, lease, and block files. Required fields are G-NAF id, building, suburb, block, bedrooms, advert date, and weekly rent. Bathrooms, parking, floor, and size are optional.</p>
+        <p>The file has 65,777 unique ids, both rents on every row, no blanks, and no reversed pairs.</p>
       </article>
       <article class="card">
         <h2>How did we estimate rent?</h2>
@@ -241,14 +238,14 @@
           <span class="arrow">→</span>
           <span class="step">M2 residual</span>
         </div>
-        <p>M0 is a time-adjusted median, from building, bedrooms, and parking, then suburb, city, and a global median. M1 blends the unit's adjusted last rent with a parking-normalised building estimate. M2 fits LightGBM, absolute-error objective, to the M1 residual on three earlier windows, each featurised from a snapshot before that window. Fewer than 100 residual rows falls back to M1. Parking premiums are nonnegative, pooled from the city toward the building, capped, and describe an observed gap, not a causal value of a car space. Weekly rents in the file are rounded to the nearest 50 cents.</p>
+        <p>M0 is a time-adjusted median, from the building down to a global median. M1 blends the unit's last rent with that. M2 fits LightGBM to the leftover error on three earlier windows, and falls back to M1 under 100 rows. Parking gaps are observed, not causal. Rents are rounded to the nearest 50 cents.</p>
       </article>
     </div>
 
     <section class="panel">
       <h2>What remains uncertain?</h2>
-      <p>The number that counts for the task is the hidden August–September file. $52.44 can move either way against that file. Asking rent is not a signed lease. Sparse history, a shift in the market, and things we do not see, such as condition or outlook, can still miss by much more than $100. The LightGBM step already did that on the February–March fold.</p>
-      <p>We would next put a map next to the unit without loosening the match, explain a missing fact in the panel instead of a blank tile, and check any model change on a new dated cohort that was not used to pick M2.</p>
+      <p>The score that counts is the hidden August–September file. Asking rent is not a signed lease, and condition or outlook can still miss by more than $100. The February–March fold already showed that.</p>
+      <p>Next we would add a map without loosening the match, explain a missing fact instead of a blank tile, and test any model change on a new dated cohort.</p>
     </section>
 
     <section class="sources">
