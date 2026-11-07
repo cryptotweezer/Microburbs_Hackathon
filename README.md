@@ -4,6 +4,30 @@ A Chrome extension that shows Microburbs data for the exact unit beside listings
 
 Built for the Microburbs hackathon, 7 November 2026 (Task 3, Chrome extension; Task 4, flat rent model).
 
+## The panel
+
+These are the real side-panel components, filled with a sample listing at Unit 105, 8 Sam Sing Street, Waterloo, so the layout is visible here. On a live listing the numbers come from the Microburbs API, and each one keeps its source and date.
+
+The address is matched to one G-NAF unit. The price check compares the asking price with the Microburbs valuation, then adds a street check and a rent yield.
+
+![Price check for a matched unit](assets/price-check.png)
+
+Cheaper like-for-like listings nearby, with the saving, size and price per square metre.
+
+![Better-value alternatives](assets/alternatives.png)
+
+The assistant answers only from cited Microburbs data.
+
+![Microburbs Agent](assets/agent.png)
+
+Same-building and nearby sales, street medians, and this flat's own sale and rent history.
+
+![Comparable sales, street prices and history](assets/sales-history.png)
+
+Suburb market, the census block against the blocks around it, and risk overlays.
+
+![Market pulse, block and risks](assets/block-risks.png)
+
 ## Install (about 30 seconds)
 
 Chrome only installs extensions without extra clicks from the Web Store, so the installer does everything else and leaves you two clicks.
