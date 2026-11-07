@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Listing Lens — hackathon report</title>
+  <style>
+    :root { color-scheme: light; }
+    body {
+      margin: 0 auto;
+      max-width: 42rem;
+      padding: 2.5rem 1.25rem 4rem;
+      font: 17px/1.5 Georgia, "Iowan Old Style", "Palatino Linotype", serif;
+      color: #1c1917;
+      background: #fafaf9;
+    }
+    h1 { font-size: 1.75rem; line-height: 1.2; margin: 0 0 0.25rem; }
+    h2 { font-size: 1.15rem; margin: 2rem 0 0.5rem; }
+    p, li { margin: 0.4rem 0; }
+    .meta { color: #57534e; font-family: ui-sans-serif, system-ui, sans-serif; font-size: 0.9rem; }
+    table { border-collapse: collapse; width: 100%; margin: 0.75rem 0 0.25rem; font-variant-numeric: tabular-nums; }
+    th, td { text-align: left; padding: 0.4rem 0.6rem 0.4rem 0; border-bottom: 1px solid #e7e5e4; vertical-align: top; }
+    th { font-family: ui-sans-serif, system-ui, sans-serif; font-size: 0.78rem; letter-spacing: 0.02em; color: #57534e; font-weight: 600; }
+    td.num { text-align: right; font-family: ui-sans-serif, system-ui, sans-serif; }
+    .note { font-family: ui-sans-serif, system-ui, sans-serif; font-size: 0.85rem; color: #57534e; }
+  </style>
+</head>
+<body>
+  <p class="meta">Microburbs hackathon, 7 November 2026 · Team mesh-block-party</p>
+  <h1>Listing Lens</h1>
+  <p>A Chrome side panel for domain.com.au and realestate.com.au listings in the City of Sydney, plus a flat-rent model for the same 65,777 addresses. Task 3 is the extension. Task 4 is the rent file.</p>
+
+  <h2>Data</h2>
+  <p>The rent model uses only the organisers' files: 65,777 City of Sydney flats, their past lease advertisements, and mesh-block home counts. Lease dates and weekly rents are the history. Beds, baths, parking and building size come from the flat file. Block statistics are dated 31 July 2026 and are hidden from any feature store before that date. Nothing after 31 July 2026 is used to build features, fit the model, or score the holdout.</p>
+  <p>The extension does not train on the API. At read time it sends the listing address to our backend, which calls Microburbs. The key stays on the server. The panel covers the 29 City of Sydney suburbs and stops when the address is outside that set.</p>
+
+  <h2>Method</h2>
+  <p><strong>Matching a listing.</strong> The page address is normalised (unit, street number, street type, suburb). It is looked up in the active for-sale and for-rent index first. If that misses, the geocoder is tried, including the swapped spelling of a lettered unit (<span>B401</span> and <span>401B</span>). A candidate is accepted only when suburb, street number, street and unit all match. A single street-number range, or a single neighbouring suburb that is still inside the City of Sydney, can match, and the panel says so. Anything else stops on an address card and loads no facts.</p>
+  <p><strong>What the panel shows.</strong> For a sale, the asking price is set against the Microburbs valuation, with a range and a confidence of High, Medium or Low taken from the method: the valuation model, a sale in the same building, or nearby comparables only. For a rental, the estimate is our model, with a car space and without. Under that, a personal score uses buyer, investor or renter weights. The weights and the budget stay in the browser. Tiles and a short local list cover the same-building sale, this street against the suburb, yield, planning applications, public housing, flood, heritage and the nearest stop. The agent answers from cited Microburbs fields. The rest of the report loads only when a card is opened.</p>
+  <p><strong>The rent model.</strong> Features for a lease are built only from leases strictly before that lease's cutoff, so a target rent never enters its own features. M0 is a hierarchy of medians: building and bedrooms and parking, then suburb, then city, then a global median, moved forward with a bedroom-specific rent trend. M1 mixes the unit's own last rent with that building median. The unit's own history gets more weight as it has more prior leases. A parking premium, capped and shrunk toward the wider area when the sample is small, is added after. M2 fits LightGBM with an absolute-error objective to the residual of M1, on three earlier six-month windows, each featurised from a snapshot before that window. Predictions are clipped to be positive, the with-parking rent is kept at least as high as the without-parking rent, and exported weekly rents are rounded to the nearest 50 cents. The submission has one row per flat and two rents.</p>
+
+  <h2>Held-out results</h2>
+  <p>The official score is median absolute error on 1,699 hidden advertisements from August and September 2026. We cannot see those rows. Our own later-data score uses leases after 31 March 2026 and before the 31 July cutoff. Features for that fold stop at 31 March.</p>
+  <table>
+    <thead>
+      <tr><th>Score</th><th class="num">Median absolute error</th><th class="num">Within $100</th><th class="num">R²</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Our model, leases after 31 March 2026</td><td class="num">$52.44 / week</td><td class="num">74.8%</td><td class="num">0.837</td></tr>
+      <tr><td>Microburbs rent model, organisers' baseline</td><td class="num">$86 / week</td><td class="num">55.2%</td><td class="num">—</td></tr>
+      <tr><td>Suburb median, organisers' baseline</td><td class="num">$100 / week</td><td class="num">—</td><td class="num">—</td></tr>
+    </tbody>
+  </table>
+  <p class="note">The $86 and $100 figures are the baselines published with the task, not numbers we re-measured. R² was not published for those baselines. Our $52.44 is the time holdout inside the supplied leases, not the hidden August–September file.</p>
+
+  <h2>What worked</h2>
+  <p>Refusing a partial address match is the part the extension is judged on. Facts appear only after one G-NAF unit is certain, and each figure keeps its source and date. Leading with the estimate, the method behind the confidence, and a score the user can reweight meant the first screen answers "is this fair for me?" without a second click. On rents, starting from the unit's own last lease and only then correcting with a small residual model beat both published baselines on our March holdout. Keeping the API key on the server, with a daily spend cap, meant the extension can be installed without handing the key to everyone who unzips it.</p>
+
+  <h2>What didn't</h2>
+  <p>There was too much back and forth on which features to build. We could have managed our time better and started iterating sooner.</p>
+
+  <h2>Compared with the portals and with other extensions</h2>
+  <p>Domain and realestate.com.au already show the listing itself: the asking price or a contact button, beds, baths and cars, photos, the map, the agent, and inspection times. Both also carry a suburb page with median prices and a broad market snapshot. Some listings sit near a "sold nearby" or school search. None of that is tied to one G-NAF unit, and none of it says where a number came from.</p>
+  <p>What the listing page does not put next to the price is the Microburbs valuation and its range, a same-building sale, how that agency usually quotes against the final price, this street's sold median against the suburb for the same bedrooms, gross yield against the suburb yield, flood and heritage on the property, or fair rent with and without a car space. The personal score is not on either portal, because it depends on weights the user sets and that we do not upload.</p>
+  <p>Browser extensions and the portals' own apps mostly repeat those same listing fields, or drop a suburb median on top of the page. The usual failure is a confident fact about the wrong home: the building instead of the unit, or a neighbouring suburb with the same street name. Listing Lens will not fill the panel in that case. It asks which unit, or it says the address is outside coverage.</p>
+</body>
+</html>
