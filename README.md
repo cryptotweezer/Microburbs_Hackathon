@@ -36,16 +36,27 @@ Open any City of Sydney listing, for example in Pyrmont, Ultimo or Surry Hills, 
 
 ## What it does
 
-- **Exact match**: the listing address is matched to one G-NAF unit, never a guess. Unclear matches ask you to choose.
-- **Price check**: the asking price against the Microburbs valuation, same-building sales and comparables. Rentals use fair rent from our model.
-- **Street check and price vs rent**: this street against the suburb and nearby streets, and the implied rental yield.
-- **Better options**: similar listings nearby ranked by saving and value per square metre.
-- **Microburbs Agent**: ask anything about the property. Answers cite their source.
-- **More on demand**: your census block, development applications, schools, history, transport and risks.
+The panel reads top to bottom.
+
+**Header.** The address from the listing, whether it matched, and whether the listing is for sale or for rent. For sale or for rent comes from Microburbs' own listings index. If the property is not in that index, the panel says the mode is a guess and lets you switch it. You can also type an address and press Check.
+
+**Address match.** A clear listing resolves to one G-NAF unit and the overview opens. An unclear one stops on an address card: building only, a list of units to pick from, an address the portal withheld, or outside the 29 City of Sydney suburbs. Nothing below that card loads until the unit is exact.
+
+**Overview.** The matched address, beds, baths, cars, size, and G-NAF id. Then the estimate: Microburbs valuation for a sale, or fair rent from our model for a rental (with a car space and without). The range sits under the figure. Confidence is High, Medium, or Low from the method behind it: the valuation or rent model, a sale in the same building, or nearby comparables only. The asking price is shown against that estimate. If Microburbs has no asking price, you can type the one on the portal. On a sale, a line under the estimate gives the likely sale price from how that agency usually quotes.
+
+**Your match.** A score for this property as a buyer, an investor, or a renter. Each preset starts the weights. Open Adjust to move sliders for value for money, investment, transport, risk, and budget, and to set your own budget. Investment is left off for a rental. The score is calculated in the browser from facts already on the panel. The settings stay in this browser.
+
+**Tiles and local context.** Four tiles: for a sale, the same-building or best comparable, the range of nearby sales, this street against the suburb, and gross yield against the suburb yield. For a rental, fair rent with and without a car space, the last lease, and the asking rent. Under the tiles: planning applications in the suburb over 12 months, public housing, flood, heritage, and the nearest train, light rail, ferry, or bus stop. A button scrolls to the full report. Every figure on the overview keeps its source and date.
+
+**Microburbs Agent.** A chat under the overview. Suggested questions cover price, cheaper options, repayments, suburb comparisons, the agency, the street, yield, and the block. Answers use cited Microburbs data. On a rental the suggestions switch to rent, transport, and risks.
+
+**Better-value alternatives.** Up to three similar listings nearby, with the saving, beds and baths, size, price per square metre, and distance. Each one can be opened on Domain or checked in the panel. If the listing has no asking price, the card shows similar listings instead of cheaper ones.
+
+**Full property report.** Collapsed cards, loaded when opened: how this agency quotes, comparable sales, street prices nearby, the suburb market pulse, your census block, development applications, schools, sale and rent history, transport, and risks and overlays. Sale-only cards are hidden on a rental.
 
 ## Privacy and safety
 
-The extension reads only the listing address from the page. API keys live on the server, never in the extension. The backend caps data spend per day, rate limits each connection and the assistant, and accepts requests only from this extension.
+The extension reads only the listing address from the page. Match preferences stay in this browser and are not sent to the server. API keys live on the server, never in the extension. The backend caps data spend per day, rate limits each connection and the assistant, and accepts requests only from this extension.
 
 ## Development
 
