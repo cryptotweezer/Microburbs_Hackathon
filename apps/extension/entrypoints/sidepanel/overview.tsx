@@ -102,8 +102,21 @@ const ICON: Record<string, string> = {
   home: "M3 11l9-8 9 8M5 10v10h14V10",
   shield: "M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z",
   pillar: "M4 21h16M6 18V9M10 18V9M14 18V9M18 18V9M3 9l9-6 9 6z",
+  bed: "M3 18V7M3 13h18v5M21 18v-3a3 3 0 0 0-3-3h-7v1M7 11a1.5 1.5 0 1 0 0-.01",
+  bath: "M4 12h16v3a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4zM6 12V5a2 2 0 0 1 4 0M7 19l-1 2M17 19l1 2",
+  area: "M4 4h16v16H4zM4 9h5M15 4v5M20 15h-5M9 20v-5",
   train: "M7 3h10a3 3 0 0 1 3 3v9a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3V6a3 3 0 0 1 3-3zM4 11h16M8 21l2-3M16 21l-2-3M8 15h.01M16 15h.01",
 };
+function Spec({ icon, text }: { icon: string; text: string }) {
+  return (
+    <span className="flex items-center gap-1">
+      <span className="text-brand-600">
+        <Icon name={icon} />
+      </span>
+      {text}
+    </span>
+  );
+}
 function Icon({ name, className = "h-4 w-4" }: { name: string; className?: string }) {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden>
@@ -257,9 +270,15 @@ export function Overview({ data, mode, onShowDetails, onPrice }: { data: Propert
     <section className="space-y-3 rounded-2xl border border-slate-200 bg-white p-3 shadow-sm">
       <div>
         <p className="text-sm font-semibold leading-snug text-slate-900">{data.match.matchedAddress ?? data.match.normalized}</p>
-        <p className="text-[11px] text-slate-500">
-          {l ? `${l.bedrooms ?? "?"} bed · ${l.bathrooms ?? "?"} bath · ${l.parking ?? 0} car${l.buildingSize ? ` · ${l.buildingSize} m2` : ""} · ` : ""}G-NAF {data.match.gnafId}
-        </p>
+        {l ? (
+          <p className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-medium text-slate-700">
+            <Spec icon="bed" text={`${l.bedrooms ?? "?"} bed`} />
+            <Spec icon="bath" text={`${l.bathrooms ?? "?"} bath`} />
+            <Spec icon="car" text={`${l.parking ?? 0} car`} />
+            {l.buildingSize ? <Spec icon="area" text={`${l.buildingSize} m²`} /> : null}
+          </p>
+        ) : null}
+        <p className="mt-0.5 text-[10.5px] text-slate-400">G-NAF {data.match.gnafId}</p>
         {data.match.note ? <p className="mt-0.5 text-[11px] text-slate-500">{data.match.note}</p> : null}
       </div>
       <Hero data={data} mode={mode} />
