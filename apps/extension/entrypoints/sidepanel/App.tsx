@@ -3,7 +3,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { fetchProperty, type Mode, type PropertyResponse } from "@/lib/api";
 import type { TabListing } from "../background";
-import { AgencyCard, AlternativesCard, BlockCard, ComparablesCard, DevelopmentCard, StreetCard, HistoryCard, MatchReceipt, PriceCard, RentCard, RisksCard, SchoolsCard, SuburbPulseCard, TransportCard } from "./sections";
+import { AgencyCard, AlternativesCard, BlockCard, ComparablesCard, DevelopmentCard, StreetCard, HistoryCard, MatchReceipt, RisksCard, SchoolsCard, SuburbPulseCard, TransportCard } from "./sections";
+import { Overview } from "./overview";
 import { Spinner } from "./ui";
 import { Chat } from "./Chat";
 
@@ -28,6 +29,7 @@ export default function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const seq = useRef(0);
+  const detailsRef = useRef<HTMLDivElement>(null);
 
   const run = useCallback(async (addr: string, m: Mode, gnaf?: string, auto = true, price?: number) => {
     if (!addr.trim()) return;
@@ -118,10 +120,18 @@ export default function App() {
               <p className="text-[10px] text-brand-100/80">Powered by Microburbs · City of Sydney</p>
             </div>
           </div>
-          {data?.match.status === "exact-unit" ? (
-            <span className="rounded-full bg-white/20 px-2.5 py-1 text-[11px] font-semibold" title={confirmed ? "From Microburbs listings" : "Guessed from the page"}>
-              {mode === "sale" ? "For sale" : "For rent"}
-            </span>
+          {data && !loading ? (
+            <div className="flex flex-col items-end gap-1">
+              <span className="flex items-center gap-1.5 text-[11px] font-semibold">
+                <span className={`h-2 w-2 rounded-full ${data.match.status === "exact-unit" ? "bg-emerald-400" : "bg-amber-400"}`} aria-hidden />
+                {data.match.status === "exact-unit" ? "Address matched" : data.match.status === "unsupported" ? "Outside coverage" : "Check address"}
+              </span>
+              {data.match.status === "exact-unit" ? (
+                <span className="rounded-full bg-white/20 px-2 py-0.5 text-[10.5px] font-semibold" title={confirmed ? "From Microburbs listings" : "Guessed from the page"}>
+                  {mode === "sale" ? "For sale" : "For rent"}
+                </span>
+              ) : null}
+            </div>
           ) : null}
         </div>
         <form
@@ -163,11 +173,17 @@ export default function App() {
 
         {data && !loading ? (
           <>
-            <MatchReceipt match={data.match} onPick={(g) => void run(address, mode, g)} />
+            {!exact ? <MatchReceipt match={data.match} onPick={(g) => void run(address, mode, g)} /> : null}
             {exact ? (
               <>
-                <PriceCard data={data} mode={mode} onPrice={(p) => void run(address, mode, data.match.gnafId ?? undefined, data.modeSource === "listing", p)} />
-                {mode === "rent" ? <RentCard data={data} /> : null}
+                <Overview
+                  key={`ov|${data.match.gnafId}|${mode}`}
+                  data={data}
+                  mode={mode}
+                  onPrice={(p) => void run(address, mode, data.match.gnafId ?? undefined, data.modeSource === "listing", p)}
+                  onShowDetails={() => detailsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })}
+                />
+                <Chat data={data} mode={mode} />
                 <AlternativesCard
                   alt={data.alternatives}
                   mode={mode}
@@ -176,8 +192,9 @@ export default function App() {
                     void run(a, mode);
                   }}
                 />
-                <Chat data={data} mode={mode} />
-                <p className="px-1 pt-1 text-[10.5px] font-semibold uppercase tracking-wide text-slate-400">More details</p>
+                <p ref={detailsRef} className="scroll-mt-28 px-1 pt-1 text-[10.5px] font-semibold uppercase tracking-wide text-slate-400">
+                  Full property report
+                </p>
                 <div className="space-y-2" key={`${data.match.gnafId}|${mode}`}>
                   {mode === "sale" ? <AgencyCard f={data.facts!} /> : null}
                   {mode === "sale" ? <ComparablesCard f={data.facts!} /> : null}
